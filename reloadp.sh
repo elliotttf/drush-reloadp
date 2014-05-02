@@ -1,7 +1,7 @@
 #!/bin/zsh
 
 drush=`which drush`
-parallel=/usr/local/bin/parallel
+parallel=`which parallel`
 source=$1
 dest=$2
 wd=`pwd`
