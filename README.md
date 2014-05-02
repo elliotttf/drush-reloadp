@@ -1,4 +1,4 @@
-# Parallel Drush Reload
+# Drush Reload Parallel
 
 Reloads Drupal databases using [drush](https://github.com/drush-ops/drush) and
 inspiration from [mysql-parallel](https://github.com/deviantintegral/mysql-parallel).
@@ -11,4 +11,4 @@ inspiration from [mysql-parallel](https://github.com/deviantintegral/mysql-paral
 
 ### Usage
 
-`./reload.sh @source.alias @dest.alis`
+`./reloadp.sh @source.alias @dest.alis`
