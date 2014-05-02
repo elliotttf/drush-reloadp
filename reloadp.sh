@@ -38,3 +38,7 @@ cd $dumpDir
 time ls -S *.sql.gz | $parallel -I % echo "Importing table %." \&\& gzcat % \| $drush $dest sqlc
 cd $wd
 rm -rf $dumpDir
+
+$drush $dest updb -y
+$drush $dest fra -y
+$drush $dest cc all
