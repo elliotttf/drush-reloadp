@@ -12,7 +12,7 @@ if [[ -z $source || -z $dest ]]; then
 fi
 
 $drush $dest sql-drop -y
-tables=`$drush $source sqlq "SHOW TABLES"`
+tables=`$drush $source sqlq --extra=--skip-column-names "SHOW TABLES"`
 
 if [[ -z $tables ]]; then
   echo "Unable to read tables from $source."
