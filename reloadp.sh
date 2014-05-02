@@ -1,6 +1,6 @@
 #!/bin/zsh
 
-drush=/Users/elliotttf/.composer/vendor/bin/drush
+drush=`which drush`
 parallel=/usr/local/bin/parallel
 source=$1
 dest=$2
