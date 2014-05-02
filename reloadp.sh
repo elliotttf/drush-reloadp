@@ -7,7 +7,7 @@ dest=$2
 wd=`pwd`
 
 if [[ -z $source || -z $dest ]]; then
-  echo "Usage: reload.sh <source.alias> <dest.alias>"
+  echo "Usage: $0 <source.alias> <dest.alias>"
   exit 1
 fi
 
