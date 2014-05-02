@@ -11,4 +11,4 @@ inspiration from [mysql-parallel](https://github.com/deviantintegral/mysql-paral
 
 ### Usage
 
-`./reloadp.sh @source.alias @dest.alis`
+`./reloadp.sh @source.alias @dest.alias`
