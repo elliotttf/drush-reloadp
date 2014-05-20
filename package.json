@@ -1,0 +1,28 @@
+{
+  "name": "drush-reloadp",
+  "version": "0.1.0",
+  "description": "Script to reload a drupal database in parallel.",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/elliotttf/drush-reloadp.git"
+  },
+  "author": "Elliott Foster <elliottf@codebrews.com> (http://codebrews.com/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/elliotttf/drush-reloadp/issues"
+  },
+  "homepage": "https://github.com/elliotttf/drush-reloadp",
+  "dependencies": {
+    "drush-node": "^0.1.3",
+    "yargs": "^1.2.2",
+    "promised-io": "^0.3.4",
+    "lodash": "^2.4.1",
+    "async": "^0.9.0",
+    "progress": "^1.1.5"
+  },
+  "preferGlobal": "true",
+  "bin": {
+    "drush-reloadp": "index.js"
+  }
+}
