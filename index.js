@@ -89,7 +89,7 @@ var reloadp = {
         // HACK - it looks like drush-node is adding a table named '.'
         // to the end. It might just be something from stdout but it's
         // blowing up this process exiting correctly.
-        _.pull(tables, '.');
+        _.pull(tables, '.', '');
 
         var barString = 'Reloading ' + this.destOpts.alias + ' [:bar] :percent in :elapseds'
         var bar = new PB(barString, { total: tables.length, width: 20 });
@@ -223,7 +223,7 @@ var reloadp = {
    *   Resolved when tasks are complete.
    */
   after: function () {
-    return drush.exec('updb');
+    return drush.exec('updb', this.destOpts);
   }
 };
 
