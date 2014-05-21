@@ -1,0 +1,142 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/bin/node',
+1 verbose cli   '/usr/local/bin/npm',
+1 verbose cli   'publish',
+1 verbose cli   '--force' ]
+2 info using npm@1.4.3
+3 info using node@v0.11.12
+4 warn using --force I sure hope you know what you are doing.
+5 verbose publish [ '.' ]
+6 verbose cache add [ '.', null ]
+7 verbose cache add name=undefined spec="." args=[".",null]
+8 verbose parsed url { protocol: null,
+8 verbose parsed url   slashes: null,
+8 verbose parsed url   auth: null,
+8 verbose parsed url   host: null,
+8 verbose parsed url   port: null,
+8 verbose parsed url   hostname: null,
+8 verbose parsed url   hash: null,
+8 verbose parsed url   search: null,
+8 verbose parsed url   query: null,
+8 verbose parsed url   pathname: '.',
+8 verbose parsed url   path: '.',
+8 verbose parsed url   href: '.' }
+9 silly lockFile 3a52ce78- .
+10 verbose lock . /Users/elliotttf/.npm/3a52ce78-.lock
+11 verbose tar pack [ '/var/folders/qm/9x4mg5m55gn47xxkzn0gbw_80000gn/T/npm-49394-mvX4_5_U/1400680228702-0.33969562128186226/tmp.tgz',
+11 verbose tar pack   '.' ]
+12 verbose tarball /var/folders/qm/9x4mg5m55gn47xxkzn0gbw_80000gn/T/npm-49394-mvX4_5_U/1400680228702-0.33969562128186226/tmp.tgz
+13 verbose folder .
+14 info prepublish drush-reloadp@0.1.1
+15 silly lockFile 1f1177db-tar tar://.
+16 verbose lock tar://. /Users/elliotttf/.npm/1f1177db-tar.lock
+17 silly lockFile dec57507-8702-0-33969562128186226-tmp-tgz tar:///var/folders/qm/9x4mg5m55gn47xxkzn0gbw_80000gn/T/npm-49394-mvX4_5_U/1400680228702-0.33969562128186226/tmp.tgz
+18 verbose lock tar:///var/folders/qm/9x4mg5m55gn47xxkzn0gbw_80000gn/T/npm-49394-mvX4_5_U/1400680228702-0.33969562128186226/tmp.tgz /Users/elliotttf/.npm/dec57507-8702-0-33969562128186226-tmp-tgz.lock
+19 silly lockFile 1f1177db-tar tar://.
+20 silly lockFile 1f1177db-tar tar://.
+21 silly lockFile dec57507-8702-0-33969562128186226-tmp-tgz tar:///var/folders/qm/9x4mg5m55gn47xxkzn0gbw_80000gn/T/npm-49394-mvX4_5_U/1400680228702-0.33969562128186226/tmp.tgz
+22 silly lockFile dec57507-8702-0-33969562128186226-tmp-tgz tar:///var/folders/qm/9x4mg5m55gn47xxkzn0gbw_80000gn/T/npm-49394-mvX4_5_U/1400680228702-0.33969562128186226/tmp.tgz
+23 verbose tar unpack /var/folders/qm/9x4mg5m55gn47xxkzn0gbw_80000gn/T/npm-49394-mvX4_5_U/1400680228702-0.33969562128186226/tmp.tgz
+24 silly lockFile 4e143184-8702-0-33969562128186226-package tar:///var/folders/qm/9x4mg5m55gn47xxkzn0gbw_80000gn/T/npm-49394-mvX4_5_U/1400680228702-0.33969562128186226/package
+25 verbose lock tar:///var/folders/qm/9x4mg5m55gn47xxkzn0gbw_80000gn/T/npm-49394-mvX4_5_U/1400680228702-0.33969562128186226/package /Users/elliotttf/.npm/4e143184-8702-0-33969562128186226-package.lock
+26 silly lockFile dec57507-8702-0-33969562128186226-tmp-tgz tar:///var/folders/qm/9x4mg5m55gn47xxkzn0gbw_80000gn/T/npm-49394-mvX4_5_U/1400680228702-0.33969562128186226/tmp.tgz
+27 verbose lock tar:///var/folders/qm/9x4mg5m55gn47xxkzn0gbw_80000gn/T/npm-49394-mvX4_5_U/1400680228702-0.33969562128186226/tmp.tgz /Users/elliotttf/.npm/dec57507-8702-0-33969562128186226-tmp-tgz.lock
+28 silly gunzTarPerm modes [ '755', '644' ]
+29 silly gunzTarPerm extractEntry package.json
+30 silly gunzTarPerm extractEntry .npmignore
+31 silly gunzTarPerm extractEntry README.md
+32 silly gunzTarPerm extractEntry index.js
+33 silly lockFile 4e143184-8702-0-33969562128186226-package tar:///var/folders/qm/9x4mg5m55gn47xxkzn0gbw_80000gn/T/npm-49394-mvX4_5_U/1400680228702-0.33969562128186226/package
+34 silly lockFile 4e143184-8702-0-33969562128186226-package tar:///var/folders/qm/9x4mg5m55gn47xxkzn0gbw_80000gn/T/npm-49394-mvX4_5_U/1400680228702-0.33969562128186226/package
+35 silly lockFile dec57507-8702-0-33969562128186226-tmp-tgz tar:///var/folders/qm/9x4mg5m55gn47xxkzn0gbw_80000gn/T/npm-49394-mvX4_5_U/1400680228702-0.33969562128186226/tmp.tgz
+36 silly lockFile dec57507-8702-0-33969562128186226-tmp-tgz tar:///var/folders/qm/9x4mg5m55gn47xxkzn0gbw_80000gn/T/npm-49394-mvX4_5_U/1400680228702-0.33969562128186226/tmp.tgz
+37 verbose tar pack [ '/Users/elliotttf/.npm/drush-reloadp/0.1.1/package.tgz',
+37 verbose tar pack   '/var/folders/qm/9x4mg5m55gn47xxkzn0gbw_80000gn/T/npm-49394-mvX4_5_U/1400680228702-0.33969562128186226/package' ]
+38 verbose tarball /Users/elliotttf/.npm/drush-reloadp/0.1.1/package.tgz
+39 verbose folder /var/folders/qm/9x4mg5m55gn47xxkzn0gbw_80000gn/T/npm-49394-mvX4_5_U/1400680228702-0.33969562128186226/package
+40 silly lockFile 4e143184-8702-0-33969562128186226-package tar:///var/folders/qm/9x4mg5m55gn47xxkzn0gbw_80000gn/T/npm-49394-mvX4_5_U/1400680228702-0.33969562128186226/package
+41 verbose lock tar:///var/folders/qm/9x4mg5m55gn47xxkzn0gbw_80000gn/T/npm-49394-mvX4_5_U/1400680228702-0.33969562128186226/package /Users/elliotttf/.npm/4e143184-8702-0-33969562128186226-package.lock
+42 silly lockFile 7429c155--drush-reloadp-0-1-1-package-tgz tar:///Users/elliotttf/.npm/drush-reloadp/0.1.1/package.tgz
+43 verbose lock tar:///Users/elliotttf/.npm/drush-reloadp/0.1.1/package.tgz /Users/elliotttf/.npm/7429c155--drush-reloadp-0-1-1-package-tgz.lock
+44 silly lockFile 4e143184-8702-0-33969562128186226-package tar:///var/folders/qm/9x4mg5m55gn47xxkzn0gbw_80000gn/T/npm-49394-mvX4_5_U/1400680228702-0.33969562128186226/package
+45 silly lockFile 4e143184-8702-0-33969562128186226-package tar:///var/folders/qm/9x4mg5m55gn47xxkzn0gbw_80000gn/T/npm-49394-mvX4_5_U/1400680228702-0.33969562128186226/package
+46 silly lockFile 7429c155--drush-reloadp-0-1-1-package-tgz tar:///Users/elliotttf/.npm/drush-reloadp/0.1.1/package.tgz
+47 silly lockFile 7429c155--drush-reloadp-0-1-1-package-tgz tar:///Users/elliotttf/.npm/drush-reloadp/0.1.1/package.tgz
+48 silly lockFile f718ca62--npm-drush-reloadp-0-1-1-package /Users/elliotttf/.npm/drush-reloadp/0.1.1/package
+49 verbose lock /Users/elliotttf/.npm/drush-reloadp/0.1.1/package /Users/elliotttf/.npm/f718ca62--npm-drush-reloadp-0-1-1-package.lock
+50 silly lockFile f718ca62--npm-drush-reloadp-0-1-1-package /Users/elliotttf/.npm/drush-reloadp/0.1.1/package
+51 silly lockFile f718ca62--npm-drush-reloadp-0-1-1-package /Users/elliotttf/.npm/drush-reloadp/0.1.1/package
+52 verbose tar unpack /Users/elliotttf/.npm/drush-reloadp/0.1.1/package.tgz
+53 silly lockFile e17cd0e0--npm-drush-reloadp-0-1-1-package tar:///Users/elliotttf/.npm/drush-reloadp/0.1.1/package
+54 verbose lock tar:///Users/elliotttf/.npm/drush-reloadp/0.1.1/package /Users/elliotttf/.npm/e17cd0e0--npm-drush-reloadp-0-1-1-package.lock
+55 silly lockFile 7429c155--drush-reloadp-0-1-1-package-tgz tar:///Users/elliotttf/.npm/drush-reloadp/0.1.1/package.tgz
+56 verbose lock tar:///Users/elliotttf/.npm/drush-reloadp/0.1.1/package.tgz /Users/elliotttf/.npm/7429c155--drush-reloadp-0-1-1-package-tgz.lock
+57 silly gunzTarPerm modes [ '755', '644' ]
+58 silly gunzTarPerm extractEntry package.json
+59 silly gunzTarPerm extractEntry .npmignore
+60 silly gunzTarPerm extractEntry README.md
+61 silly gunzTarPerm extractEntry index.js
+62 silly lockFile e17cd0e0--npm-drush-reloadp-0-1-1-package tar:///Users/elliotttf/.npm/drush-reloadp/0.1.1/package
+63 silly lockFile e17cd0e0--npm-drush-reloadp-0-1-1-package tar:///Users/elliotttf/.npm/drush-reloadp/0.1.1/package
+64 silly lockFile 7429c155--drush-reloadp-0-1-1-package-tgz tar:///Users/elliotttf/.npm/drush-reloadp/0.1.1/package.tgz
+65 silly lockFile 7429c155--drush-reloadp-0-1-1-package-tgz tar:///Users/elliotttf/.npm/drush-reloadp/0.1.1/package.tgz
+66 verbose chmod /Users/elliotttf/.npm/drush-reloadp/0.1.1/package.tgz 644
+67 verbose chown /Users/elliotttf/.npm/drush-reloadp/0.1.1/package.tgz [ 501, 20 ]
+68 silly lockFile 3a52ce78- .
+69 silly lockFile 3a52ce78- .
+70 silly publish { name: 'drush-reloadp',
+70 silly publish   version: '0.1.1',
+70 silly publish   description: 'Script to reload a drupal database in parallel.',
+70 silly publish   main: 'index.js',
+70 silly publish   repository:
+70 silly publish    { type: 'git',
+70 silly publish      url: 'git://github.com/elliotttf/drush-reloadp.git' },
+70 silly publish   author:
+70 silly publish    { name: 'Elliott Foster',
+70 silly publish      email: 'elliottf@codebrews.com',
+70 silly publish      url: 'http://codebrews.com/' },
+70 silly publish   license: 'MIT',
+70 silly publish   bugs: { url: 'https://github.com/elliotttf/drush-reloadp/issues' },
+70 silly publish   homepage: 'https://github.com/elliotttf/drush-reloadp',
+70 silly publish   dependencies:
+70 silly publish    { 'drush-node': '^0.1.3',
+70 silly publish      yargs: '^1.2.2',
+70 silly publish      'promised-io': '^0.3.4',
+70 silly publish      lodash: '^2.4.1',
+70 silly publish      async: '^0.9.0',
+70 silly publish      progress: '^1.1.5' },
+70 silly publish   preferGlobal: 'true',
+70 silly publish   bin: { 'drush-reloadp': 'index.js' },
+70 silly publish   readme: '# Drush Reload Parallel\n\nReloads Drupal databases using [drush](https://github.com/drush-ops/drush).\n\nThis module will dump all the tables from a source database in parallel\nand simultaneously begin importing tables into a destination database.\nOnce the dump and import is complete `drush updb` will be run against the\ndestination site. This is particularly useful for very large databases that\nwould otherwise take a long time to dump then import.\n\n## Installation\n\n```bash\n$ npm install -g drush-reloadp\n```\n\n## Usage\n\n```bash\n$ drush-reloadp -s @source.alias -d @dest.alias\n```\n\n## Caveats\n\nThis method sacrifices consistency for speed. If the source database is\nreceiving new data it\'s possible to end up with a missing relations for data\nthat was created on tables that were already imported.\n\nSome strategies to avoid this:\n\n1. Run this code against a low traffic site (i.e. a staging environment).\n2. Lock the source site so new content cannot be created.\n3. Do nothing – in practice this hasn\'t been a problem for the sites I\'ve\n   used it on.\n\n## License\n\n[MIT](http://opensource.org/licenses/MIT).\n\n## Credits\n\nThis module was inspired by [mysql-parallel](https://github.com/deviantintegral/mysql-parallel).\n\n',
+70 silly publish   readmeFilename: 'README.md',
+70 silly publish   _id: 'drush-reloadp@0.1.1',
+70 silly publish   dist: { shasum: 'fb9897b7b6d55f6597b5a1739c5b350f514d5fe9' },
+70 silly publish   _from: '.' }
+71 verbose url raw drush-reloadp
+72 verbose url resolving [ 'https://registry.npmjs.org/', './drush-reloadp' ]
+73 verbose url resolved https://registry.npmjs.org/drush-reloadp
+74 info trying registry request attempt 1 at 08:50:28
+75 http PUT https://registry.npmjs.org/drush-reloadp
+76 http 403 https://registry.npmjs.org/drush-reloadp
+77 error publish Failed PUT 403
+78 error Error: forbidden cannot modify pre-existing version: 0.1.1
+78 error old={"name":"drush-reloadp","version":"0.1.1","description":"Script to reload a drupal database in parallel.","main":"index.js","repository":{"type":"git","url":"git://github.com/elliotttf/drush-reloadp.git"},"author":{"name":"Elliott Foster","email":"elliottf@codebrews.com","url":"http://codebrews.com/"},"license":"MIT","bugs":{"url":"https://github.com/elliotttf/drush-reloadp/issues"},"homepage":"https://github.com/elliotttf/drush-reloadp","dependencies":{"drush-node":"^0.1.3","yargs":"^1.2.2","promised-io":"^0.3.4","lodash":"^2.4.1","async":"^0.9.0","progress":"^1.1.5"},"preferGlobal":"true","bin":{"drush-reloadp":"index.js"},"_id":"drush-reloadp@0.1.1","dist":{"shasum":"7a8ef14ec485cf484d6accc0287a044442b5bbed","tarball":"http://registry.npmjs.org/drush-reloadp/-/drush-reloadp-0.1.1.tgz"},"_from":".","_npmVersion":"1.4.3","_npmUser":{"name":"elliotttf","email":"elliottf@codebrews.com"},"maintainers":[{"name":"elliotttf","email":"elliottf@codebrews.com"}]}
+78 error new={"name":"drush-reloadp","version":"0.1.1","description":"Script to reload a drupal database in parallel.","main":"index.js","repository":{"type":"git","url":"git://github.com/elliotttf/drush-reloadp.git"},"author":{"name":"Elliott Foster","email":"elliottf@codebrews.com","url":"http://codebrews.com/"},"license":"MIT","bugs":{"url":"https://github.com/elliotttf/drush-reloadp/issues"},"homepage":"https://github.com/elliotttf/drush-reloadp","dependencies":{"drush-node":"^0.1.3","yargs":"^1.2.2","promised-io":"^0.3.4","lodash":"^2.4.1","async":"^0.9.0","progress":"^1.1.5"},"preferGlobal":"true","bin":{"drush-reloadp":"index.js"},"readme":"# Drush Reload Parallel\u000a\u000aReloads Drupal databases using [drush](https://github.com/drush-ops/drush).\u000a\u000aThis module will dump all the tables from a source database in parallel\u000aand simultaneously begin importing tables into a destination database.\u000aOnce the dump and import is complete `drush updb` will be run against the\u000adestination site. This is particularly useful for very large databases that\u000awould otherwise take a long time to dump then import.\u000a\u000a## Installation\u000a\u000a```bash\u000a$ npm install -g drush-reloadp\u000a```\u000a\u000a## Usage\u000a\u000a```bash\u000a$ drush-reloadp -s @source.alias -d @dest.alias\u000a```\u000a\u000a## Caveats\u000a\u000aThis method sacrifices consistency for speed. If the source database is\u000areceiving new data it's possible to end up with a missing relations for data\u000athat was created on tables that were already imported.\u000a\u000aSome strategies to avoid this:\u000a\u000a1. Run this code against a low traffic site (i.e. a staging environment).\u000a2. Lock the source site so new content cannot be created.\u000a3. Do nothing – in practice this hasn't been a problem for the sites I've\u000a   used it on.\u000a\u000a## License\u000a\u000a[MIT](http://opensource.org/licenses/MIT).\u000a\u000a## Credits\u000a\u000aThis module was inspired by [mysql-parallel](https://github.com/deviantintegral/mysql-parallel).\u000a\u000a","readmeFilename":"README.md","_id":"drush-reloadp@0.1.1","dist":{"shasum":"fb9897b7b6d55f6597b5a1739c5b350f514d5fe9","tarball":"http://registry.npmjs.org/drush-reloadp/-/drush-reloadp-0.1.1.tgz"},"_from":".","_npmVersion":"1.4.3","_npmUser":{"name":"elliotttf","email":"elliottf@codebrews.com"},"maintainers":[{"name":"elliotttf","email":"elliottf@codebrews.com"}]}: drush-reloadp
+78 error     at RegClient.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:237:14)
+78 error     at Request.self.callback (/usr/local/lib/node_modules/npm/node_modules/request/request.js:123:22)
+78 error     at Request.EventEmitter.emit (events.js:107:17)
+78 error     at Request.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/request/request.js:893:14)
+78 error     at Request.EventEmitter.emit (events.js:126:20)
+78 error     at IncomingMessage.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/request/request.js:844:12)
+78 error     at IncomingMessage.EventEmitter.emit (events.js:126:20)
+78 error     at _stream_readable.js:895:16
+78 error     at process._tickCallback (node.js:339:11)
+79 error If you need help, you may report this *entire* log,
+79 error including the npm and node versions, at:
+79 error     <http://github.com/npm/npm/issues>
+80 error System Darwin 13.1.0
+81 error command "/usr/local/bin/node" "/usr/local/bin/npm" "publish" "--force"
+82 error cwd /Users/elliotttf/Documents/dev/drush-reloadp
+83 error node -v v0.11.12
+84 error npm -v 1.4.3
+85 verbose exit [ 1, true ]
