@@ -30,7 +30,7 @@ Some strategies to avoid this:
 
 1. Run this code against a low traffic site (i.e. a staging environment).
 2. Lock the source site so new content cannot be created.
-3. Do nothing – in practice this hasn't been a problem for the site's I've
+3. Do nothing – in practice this hasn't been a problem for the sites I've
    used it on.
 
 ## License
