@@ -9,6 +9,8 @@ var PB = require('progress');
 var promise = require('promised-io/promise');
 var zlib = require('zlib');
 
+var cpus = require('os').cpus().length;
+
 var argv = require('yargs')
   .usage('$0 -s <source.alias> -d <dest.alias> [-v]')
   .demand([ 's', 'd' ])
@@ -19,8 +21,10 @@ var argv = require('yargs')
   .argv;
 
 var reloadp = {
-  sourceCores: 2,
-  destCores: 2,
+  localSource: false,
+  localDest: false,
+  sourceCores: cpus,
+  destCores: cpus,
   sourceOpts: '',
   destOpts: '',
   dumpDir: '',
@@ -50,6 +54,20 @@ var reloadp = {
   },
 
   /**
+   * Determines if a site alias is local or remote.
+   *
+   * @return promise
+   *   Resolved when drush the aliases have been examined for
+   *   both the source and destination.
+   */
+  checkAliases: function () {
+    return promise.all([
+      drush.exec('sa ' + this.sourceOpts.alias + ' --full'),
+      drush.exec('sa ' + this.destOpts.alias + ' --full'),
+    ]);
+  },
+
+  /**
    * Drops tables from the destination target.
    *
    * @return promise
@@ -67,10 +85,26 @@ var reloadp = {
    *   Resolved when processors have been fetched from both targets.
    */
   getCores: function () {
-    return promise.all([
-      drush.exec('ssh "grep -c ^processor /proc/cpuinfo"', this.sourceOpts),
-      drush.exec('ssh "grep -c ^processor /proc/cpuinfo"', this.destOpts),
-    ]);
+    var promises = [];
+    if (!this.localSource) {
+      promises.push(drush.exec('ssh "grep -c ^processor /proc/cpuinfo"', this.sourceOpts));
+    }
+    else {
+      var sourceDef = new promise.Deferred();
+      promises.push(sourceDef);
+      sourceDef.resolve(this.sourceCores);
+    }
+
+    if (!this.localDest) {
+      promises.push(drush.exec('ssh "grep -c ^processor /proc/cpuinfo"', this.destOpts));
+    }
+    else {
+      var destDef = new promise.Deferred();
+      promises.push(destDef);
+      destDef.resolve(this.destCores);
+    }
+
+    return promise.all(promises);
   },
 
   /**
@@ -229,7 +263,22 @@ var reloadp = {
 
 reloadp.init(argv.s, argv.d)
   .then(
-    _.bind(reloadp.getCores, reloadp),
+    _.bind(reloadp.checkAliases, reloadp),
+    function(err) {
+      console.error(err);
+      process.exit(1);
+    }
+  )
+  .then(
+    function (aliases) {
+      if (!aliases[0].match(/remote-host/)) {
+        reloadp.localSource = true;
+      }
+      if (!aliases[1].match(/remote-host/)) {
+        reloadp.localDest = true;
+      }
+      return reloadp.getCores();
+    },
     function (err) {
       console.error(err);
       process.exit(1);
@@ -238,10 +287,10 @@ reloadp.init(argv.s, argv.d)
   .then(
     function (cores) {
       if (cores[0]) {
-        reloadp.sourceCores = cores[0].replace(/\D/, '');
+        reloadp.sourceCores = (cores[0] + '').replace(/\D/, '');
       }
       if (cores[1]) {
-        reloadp.destCores = cores[1].replace(/\D/, '');
+        reloadp.destCores = (cores[1] + '').replace(/\D/, '');
       }
       return reloadp.dropTables();
     },
