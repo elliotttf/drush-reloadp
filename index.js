@@ -4,12 +4,13 @@ var _ = require('lodash');
 var async = require('async');
 var drush = require('drush-node');
 var fs = require('fs');
+var os = require('os');
 var path = require('path');
 var PB = require('progress');
 var promise = require('promised-io/promise');
 var zlib = require('zlib');
 
-var cpus = require('os').cpus().length;
+var cpus = os.cpus().length;
 
 var argv = require('yargs')
   .usage('$0 -s <source.alias> -d <dest.alias> [-v]')
@@ -42,7 +43,7 @@ var reloadp = {
    */
   init: function (source, dest) {
     var d = new Date();
-    this.dumpDir = path.join(path.sep, 'tmp', d.getTime() + '-' + source + '-' + dest);
+    this.dumpDir = path.join(os.tmpdir(), d.getTime() + '-' + source + '-' + dest);
     fs.mkdir(this.dumpDir);
     this.sourceOpts = {
       alias: source
@@ -257,6 +258,7 @@ var reloadp = {
    *   Resolved when tasks are complete.
    */
   after: function () {
+    fs.rmdir(this.dumpDir);
     return drush.exec('updb', this.destOpts);
   }
 };
