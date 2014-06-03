@@ -19,8 +19,8 @@ var argv = require('yargs')
   .argv;
 
 var reloadp = {
-  sourceCores: null,
-  destCores: null,
+  sourceCores: 2,
+  destCores: 2,
   sourceOpts: '',
   destOpts: '',
   dumpDir: '',
@@ -91,7 +91,7 @@ var reloadp = {
         // blowing up this process exiting correctly.
         _.pull(tables, '.', '');
 
-        var barString = 'Reloading ' + this.destOpts.alias + ' [:bar] :percent in :elapseds'
+        var barString = 'Reloading ' + this.destOpts.alias + ' [:bar] :percent in :elapseds';
         var bar = new PB(barString, { total: tables.length, width: 20 });
 
         var iq = async.queue(_.bind(this.importWorker, this), this.destCores);
@@ -237,8 +237,12 @@ reloadp.init(argv.s, argv.d)
   )
   .then(
     function (cores) {
-      reloadp.sourceCores = cores[0].replace(/\D/, '');
-      reloadp.destCores = cores[1].replace(/\D/, '');
+      if (cores[0]) {
+        reloadp.sourceCores = cores[0].replace(/\D/, '');
+      }
+      if (cores[1]) {
+        reloadp.destCores = cores[1].replace(/\D/, '');
+      }
       return reloadp.dropTables();
     },
     function (err) {
