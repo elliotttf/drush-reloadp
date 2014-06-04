@@ -10,6 +10,7 @@ var PB = require('progress');
 var promise = require('promised-io/promise');
 var Stream = require('stream');
 var zlib = require('zlib');
+var rimraf = require('rimraf');
 
 var cpus = os.cpus().length;
 
@@ -269,7 +270,7 @@ var reloadp = {
    *   Resolved when tasks are complete.
    */
   after: function () {
-    fs.rmdir(this.dumpDir);
+    rimraf(this.dumpDir);
     return drush.exec('updb', this.destOpts);
   }
 };
