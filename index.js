@@ -8,6 +8,7 @@ var os = require('os');
 var path = require('path');
 var PB = require('progress');
 var promise = require('promised-io/promise');
+var Stream = require('stream');
 var zlib = require('zlib');
 
 var cpus = os.cpus().length;
@@ -51,7 +52,10 @@ var reloadp = {
     this.destOpts = {
       alias: dest
     };
-    return drush.init({ maxBuffer: (1024 * 1024 * 1024) });
+    return drush.init({
+      maxBuffer: (1024 * 1024 * 1024),
+      encoding: 'binary'
+    });
   },
 
   /**
@@ -93,7 +97,7 @@ var reloadp = {
     else {
       var sourceDef = new promise.Deferred();
       promises.push(sourceDef);
-      sourceDef.resolve(this.sourceCores);
+      sourceDef.resolve(new Buffer(this.sourceCores, 'binary'));
     }
 
     if (!this.localDest) {
@@ -102,7 +106,7 @@ var reloadp = {
     else {
       var destDef = new promise.Deferred();
       promises.push(destDef);
-      destDef.resolve(this.destCores);
+      destDef.resolve(new Buffer(this.destCores, 'binary'));
     }
 
     return promise.all(promises);
@@ -232,19 +236,27 @@ var reloadp = {
         console.log('Dumping ' + table + '.');
       }
 
-      // TODO - support gzip.
-      drush.exec('sql-dump --tables-list=' + table, this.sourceOpts)
+      drush.exec('sql-dump --gzip --tables-list=' + table, this.sourceOpts)
         .then(function (res) {
-          fs.writeFile(dumpFile, res, function (err) {
-            if (err) {
-              return def.reject('Error writing file.');
-            }
+          var gunzip = zlib.createGunzip();
+          var rs = new Stream.Readable();
+          rs.push(res, 'binary');
+          rs.push(null);
 
+          var wStream = fs.createWriteStream(dumpFile);
+          wStream.on('finish', function () {
             def.resolve({
               table: table,
               file: dumpFile
             });
           });
+          wStream.on('error', function (err) {
+            def.reject(err);
+          });
+
+          rs
+            .pipe(gunzip)
+            .pipe(wStream);
         });
 
       return def.promise;
@@ -273,10 +285,12 @@ reloadp.init(argv.s, argv.d)
   )
   .then(
     function (aliases) {
-      if (!aliases[0].match(/remote-host/)) {
+      var sourceAlias = aliases[0].toString('binary');
+      var destAlias = aliases[1].toString('binary');
+      if (!sourceAlias.match(/remote-host/)) {
         reloadp.localSource = true;
       }
-      if (!aliases[1].match(/remote-host/)) {
+      if (!destAlias.match(/remote-host/)) {
         reloadp.localDest = true;
       }
       return reloadp.getCores();
@@ -288,11 +302,13 @@ reloadp.init(argv.s, argv.d)
   )
   .then(
     function (cores) {
-      if (cores[0]) {
-        reloadp.sourceCores = (cores[0] + '').replace(/\D/, '');
+      var sourceCores = cores[0].toString('binary');
+      var destCores = cores[1].toString('binary');
+      if (sourceCores) {
+        reloadp.sourceCores = sourceCores.replace(/\D/, '');
       }
-      if (cores[1]) {
-        reloadp.destCores = (cores[1] + '').replace(/\D/, '');
+      if (destCores) {
+        reloadp.destCores = destCores.replace(/\D/, '');
       }
       return reloadp.dropTables();
     },
