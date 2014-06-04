@@ -254,8 +254,7 @@ var reloadp = {
             def.reject(err);
           });
 
-          rs
-            .pipe(gunzip)
+          rs.pipe(gunzip)
             .pipe(wStream);
         });
 
