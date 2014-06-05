@@ -272,34 +272,54 @@ var reloadp = {
   after: function () {
     rimraf(this.dumpDir);
     return drush.exec('updb', this.destOpts);
+  },
+
+  /**
+   * Sets a flag if the provided source/dest aliases
+   *  are in fact local.
+   *
+   * @param {array<string>} aliases
+   *   [0] - Alias information on source
+   *   [1] - Alias information on dest
+   */
+  setLocalAliasFlags: function (aliases) {
+    var sourceAlias = aliases[0].toString('binary');
+    var destAlias = aliases[1].toString('binary');
+    if (!sourceAlias.match(/remote-host/)) {
+      reloadp.localSource = true;
+    }
+    if (!destAlias.match(/remote-host/)) {
+      reloadp.localDest = true;
+    }
+  },
+
+  /**
+   * Sets flags to let us know how many cores are available
+   *   on source and destination instances
+   *
+   * @param {array<string>} cores
+   *  [0] - CPU information on source
+   *  [1] - CPU information on dest
+   */
+  setCores: function (cores) {
+    var sourceCores = cores[0].toString('binary');
+    var destCores = cores[1].toString('binary');
+    if (sourceCores) {
+      reloadp.sourceCores = sourceCores.replace(/\D/, '');
+    }
+    if (destCores) {
+      reloadp.destCores = destCores.replace(/\D/, '');
+    }
   }
 };
 
 promise.seq([
-    reloadp.init.bind(this, argv.s, argv.d),
+    reloadp.init.bind(reloadp, argv.s, argv.d),
     reloadp.checkAliases.bind(reloadp),
-    function (aliases) {
-      var sourceAlias = aliases[0].toString('binary');
-      var destAlias = aliases[1].toString('binary');
-      if (!sourceAlias.match(/remote-host/)) {
-        reloadp.localSource = true;
-      }
-      if (!destAlias.match(/remote-host/)) {
-        reloadp.localDest = true;
-      }
-      return reloadp.getCores();
-    },
-    function (cores) {
-      var sourceCores = cores[0].toString('binary');
-      var destCores = cores[1].toString('binary');
-      if (sourceCores) {
-        reloadp.sourceCores = sourceCores.replace(/\D/, '');
-      }
-      if (destCores) {
-        reloadp.destCores = destCores.replace(/\D/, '');
-      }
-      return reloadp.dropTables();
-    },
+    reloadp.setLocalAliasFlags.bind(reloadp),
+    reloadp.getCores.bind(reloadp),
+    reloadp.setCores.bind(reloadp),
+    reloadp.dropTables.bind(reloadp),
     reloadp.reload.bind(reloadp),
     reloadp.after.bind(reloadp)
   ])
