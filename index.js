@@ -12,7 +12,7 @@ var Stream = require('stream');
 var zlib = require('zlib');
 var rimraf = require('rimraf');
 
-var cpus = os.cpus().length;
+var cpus = os.cpus().length + '';
 
 var argv = require('yargs')
   .usage('$0 -s <source.alias> -d <dest.alias> [-v]')
@@ -288,10 +288,10 @@ var reloadp = _.bindAll({
     var sourceAlias = aliases[0].toString('binary');
     var destAlias = aliases[1].toString('binary');
     if (!sourceAlias.match(/remote-host/)) {
-      reloadp.localSource = true;
+      this.localSource = true;
     }
     if (!destAlias.match(/remote-host/)) {
-      reloadp.localDest = true;
+      this.localDest = true;
     }
   },
 
@@ -307,10 +307,10 @@ var reloadp = _.bindAll({
     var sourceCores = cores[0].toString('binary');
     var destCores = cores[1].toString('binary');
     if (sourceCores) {
-      reloadp.sourceCores = sourceCores.replace(/\D/, '');
+      this.sourceCores = sourceCores.replace(/\D/, '');
     }
     if (destCores) {
-      reloadp.destCores = destCores.replace(/\D/, '');
+      this.destCores = destCores.replace(/\D/, '');
     }
   }
 });
