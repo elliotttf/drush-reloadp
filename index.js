@@ -23,7 +23,7 @@ var argv = require('yargs')
   .alias('v', 'verbose')
   .argv;
 
-var reloadp = {
+var reloadp = _.bindAll({
   localSource: false,
   localDest: false,
   sourceCores: cpus,
@@ -45,6 +45,8 @@ var reloadp = {
    */
   init: function (source, dest) {
     var d = new Date();
+    source = source || argv.s;
+    dest = dest || argv.d;
     this.dumpDir = path.join(os.tmpdir(), d.getTime() + '-' + source + '-' + dest);
     fs.mkdir(this.dumpDir);
     this.sourceOpts = {
@@ -134,8 +136,8 @@ var reloadp = {
         var barString = 'Reloading ' + this.destOpts.alias + ' [:bar] :percent in :elapseds';
         var bar = new PB(barString, { total: tables.length, width: 20 });
 
-        var iq = async.queue(this.importWorker.bind(this), this.destCores);
-        var dq = async.queue(this.dumpWorker.bind(this), this.sourceCores);
+        var iq = async.queue(this.importWorker, this.destCores);
+        var dq = async.queue(this.dumpWorker, this.sourceCores);
 
         dq.pause();
         dq.drain = function () {
@@ -275,14 +277,14 @@ var reloadp = {
   },
 
   /**
-   * Sets a flag if the provided source/dest aliases
-   *  are in fact local.
+   * Sets flags about the provided aliases
+   *  - if they are in fact local.
    *
    * @param {array<string>} aliases
    *   [0] - Alias information on source
    *   [1] - Alias information on dest
    */
-  setLocalAliasFlags: function (aliases) {
+  setAliases: function (aliases) {
     var sourceAlias = aliases[0].toString('binary');
     var destAlias = aliases[1].toString('binary');
     if (!sourceAlias.match(/remote-host/)) {
@@ -311,17 +313,17 @@ var reloadp = {
       reloadp.destCores = destCores.replace(/\D/, '');
     }
   }
-};
+});
 
 promise.seq([
-    reloadp.init.bind(reloadp, argv.s, argv.d),
-    reloadp.checkAliases.bind(reloadp),
-    reloadp.setLocalAliasFlags.bind(reloadp),
-    reloadp.getCores.bind(reloadp),
-    reloadp.setCores.bind(reloadp),
-    reloadp.dropTables.bind(reloadp),
-    reloadp.reload.bind(reloadp),
-    reloadp.after.bind(reloadp)
+    reloadp.init,
+    reloadp.checkAliases,
+    reloadp.setAliases,
+    reloadp.getCores,
+    reloadp.setCores,
+    reloadp.dropTables,
+    reloadp.reload,
+    reloadp.after
   ])
   .then(
     function () {
