@@ -275,15 +275,9 @@ var reloadp = {
   }
 };
 
-reloadp.init(argv.s, argv.d)
-  .then(
+promise.seq([
+    reloadp.init.bind(this, argv.s, argv.d),
     reloadp.checkAliases.bind(reloadp),
-    function(err) {
-      console.error(err);
-      process.exit(1);
-    }
-  )
-  .then(
     function (aliases) {
       var sourceAlias = aliases[0].toString('binary');
       var destAlias = aliases[1].toString('binary');
@@ -295,12 +289,6 @@ reloadp.init(argv.s, argv.d)
       }
       return reloadp.getCores();
     },
-    function (err) {
-      console.error(err);
-      process.exit(1);
-    }
-  )
-  .then(
     function (cores) {
       var sourceCores = cores[0].toString('binary');
       var destCores = cores[1].toString('binary');
@@ -312,25 +300,9 @@ reloadp.init(argv.s, argv.d)
       }
       return reloadp.dropTables();
     },
-    function (err) {
-      console.error(err);
-      process.exit(1);
-    }
-  )
-  .then(
     reloadp.reload.bind(reloadp),
-    function (err) {
-      console.error(err);
-      process.exit(1);
-    }
-  )
-  .then(
-    reloadp.after.bind(reloadp),
-    function (err) {
-      console.error(err);
-      process.exit(1);
-    }
-  )
+    reloadp.after.bind(reloadp)
+  ])
   .then(
     function () {
       process.exit(0);
@@ -340,4 +312,3 @@ reloadp.init(argv.s, argv.d)
       process.exit(1);
     }
   );
-
