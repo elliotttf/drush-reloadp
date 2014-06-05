@@ -124,7 +124,7 @@ var reloadp = {
     var def = new promise.Deferred();
 
     drush.exec('sqlq --extra=--skip-column-names "SHOW TABLES"', this.sourceOpts)
-      .then(_.bind(function (tables) {
+      .then(function (tables) {
         tables = tables.split(require('os').EOL);
         // HACK - it looks like drush-node is adding a table named '.'
         // to the end. It might just be something from stdout but it's
@@ -134,8 +134,8 @@ var reloadp = {
         var barString = 'Reloading ' + this.destOpts.alias + ' [:bar] :percent in :elapseds';
         var bar = new PB(barString, { total: tables.length, width: 20 });
 
-        var iq = async.queue(_.bind(this.importWorker, this), this.destCores);
-        var dq = async.queue(_.bind(this.dumpWorker, this), this.sourceCores);
+        var iq = async.queue(this.importWorker.bind(this), this.destCores);
+        var dq = async.queue(this.dumpWorker.bind(this), this.sourceCores);
 
         dq.pause();
         dq.drain = function () {
@@ -144,7 +144,7 @@ var reloadp = {
           };
         };
 
-        _.each(tables, function (table) {
+        tables.forEach(function (table) {
           dq.push(
             {
               iq: iq,
@@ -159,7 +159,7 @@ var reloadp = {
           );
         }, this);
         dq.resume();
-      }, this));
+      }.bind(this));
 
     return def.promise;
   },
@@ -202,7 +202,7 @@ var reloadp = {
    */
   dumpWorker: function (task, callback) {
     task.fn().then(
-      _.bind(function (res) {
+      function (res) {
         task.iq.push(
           {
             res: res,
@@ -216,7 +216,7 @@ var reloadp = {
           }
         );
         callback();
-      }, this),
+      }.bind(this),
       callback
     );
   },
@@ -231,7 +231,7 @@ var reloadp = {
    */
   dumpTable: function (table) {
     var dumpFile = path.join(this.dumpDir, table + '.sql');
-    return _.bind(function () {
+    return function () {
       var def = new promise.Deferred();
       if (argv.v) {
         console.log('Dumping ' + table + '.');
@@ -260,7 +260,7 @@ var reloadp = {
         });
 
       return def.promise;
-    }, this);
+    }.bind(this);
   },
 
   /**
@@ -277,7 +277,7 @@ var reloadp = {
 
 reloadp.init(argv.s, argv.d)
   .then(
-    _.bind(reloadp.checkAliases, reloadp),
+    reloadp.checkAliases.bind(reloadp),
     function(err) {
       console.error(err);
       process.exit(1);
@@ -318,14 +318,14 @@ reloadp.init(argv.s, argv.d)
     }
   )
   .then(
-    _.bind(reloadp.reload, reloadp),
+    reloadp.reload.bind(reloadp),
     function (err) {
       console.error(err);
       process.exit(1);
     }
   )
   .then(
-    _.bind(reloadp.after, reloadp),
+    reloadp.after.bind(reloadp),
     function (err) {
       console.error(err);
       process.exit(1);
