@@ -20,6 +20,19 @@ $ npm install -g drush-reloadp
 $ drush-reloadp -s @source.alias -d @dest.alias
 ```
 
+## Advanced usage
+
+```bash
+drush-reloadp -s <source.alias> -d <dest.alias> [-t <table1>[,<table2>...]] [-vr]
+
+Options:
+  -s, --source       The source drush alias to dump the database from.                  [required]
+  -d, --dest         The destination drush alias to import the database to.             [required]
+  -v, --verbose      Print more information about what's happening during the process.
+  -t, --skip-tables  Comma delimited list of tables to skip imports of.
+  -r, --skip-drop    Skip dropping tables from the destination database.
+```
+
 ## Caveats
 
 This method sacrifices consistency for speed. If the source database is
