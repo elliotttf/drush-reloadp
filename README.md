@@ -23,7 +23,7 @@ $ drush-reloadp -s @source.alias -d @dest.alias
 ## Advanced usage
 
 ```bash
-$ drush-reloadp -s <source.alias> -d <dest.alias> [-t <table1>[,<table2>...]] [-vr]
+$ drush-reloadp -s <source.alias> -d <dest.alias> [-t <table1>[,<table2>...]] [-vr] [--version]
 
 Options:
   -s, --source       The source drush alias to dump the database from.                  [required]
@@ -31,6 +31,7 @@ Options:
   -v, --verbose      Print more information about what's happening during the process.
   -t, --skip-tables  Comma delimited list of tables to skip imports of.
   -r, --skip-drop    Skip dropping tables from the destination database.
+  --version          Return the version of drush-reloadp.
 ```
 
 ## Caveats
