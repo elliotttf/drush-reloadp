@@ -15,12 +15,20 @@ var rimraf = require('rimraf');
 var cpus = os.cpus().length + '';
 
 var argv = require('yargs')
-  .usage('$0 -s <source.alias> -d <dest.alias> [-v]')
+  .usage('$0 -s <source.alias> -d <dest.alias> [-t <table1>[,<table2>...]] [-vr]')
   .demand([ 's', 'd' ])
   .boolean('v')
+  .boolean('r')
   .alias('s', 'source')
   .alias('d', 'dest')
   .alias('v', 'verbose')
+  .alias('t', 'skip-tables')
+  .alias('r', 'skip-drop')
+  .describe('s', 'The source drush alias to dump the database from.')
+  .describe('d', 'The destination drush alias to import the database to.')
+  .describe('v', "Print more information about what's happening during the process.")
+  .describe('t', 'Comma delimited list of tables to skip imports of.')
+  .describe('r', 'Skip dropping tables from the destination database.')
   .argv;
 
 var reloadp = _.bindAll({
@@ -82,6 +90,12 @@ var reloadp = _.bindAll({
    *   Resolved when destination tables have been dropped.
    */
   dropTables: function () {
+    if (argv.r) {
+      var def = new promise.Deferred();
+      def.resolve();
+      return def;
+    }
+
     return drush.exec('sql-drop', this.destOpts);
   },
 
@@ -131,7 +145,15 @@ var reloadp = _.bindAll({
         // HACK - it looks like drush-node is adding a table named '.'
         // to the end. It might just be something from stdout but it's
         // blowing up this process exiting correctly.
-        _.pull(tables, '.', '');
+        var pullArgs = [tables, '.', ''];
+
+        // If we're skipping other tables, add those too.
+        if (argv.t) {
+          pullArgs = _.union(pullArgs, argv.t.split(','));
+        }
+
+        // Remove tables we don't want to import.
+        _.pull.apply(this, pullArgs);
 
         var barString = 'Reloading ' + this.destOpts.alias + ' [:bar] :percent in :elapseds';
         var bar = new PB(barString, { total: tables.length, width: 20 });
@@ -180,7 +202,7 @@ var reloadp = _.bindAll({
    */
   importWorker: function (task, callback) {
     if (argv.v) {
-      console.log('Importing ' + task.table + '.');
+      console.log('Importing ' + task.res.table + '.');
     }
     drush.exec('sqlc', _.merge(this.destOpts, { cat: task.res.file }))
       .then(
