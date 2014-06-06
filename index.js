@@ -272,7 +272,11 @@ var reloadp = _.bindAll({
    *   Resolved when tasks are complete.
    */
   after: function () {
-    rimraf(this.dumpDir);
+    rimraf(this.dumpDir, function (err) {
+      if (err) {
+        console.error('The temporary dump directory was not correctly removed.');
+      }
+    });
     return drush.exec('updb', this.destOpts);
   },
 
@@ -334,3 +338,4 @@ promise.seq([
       process.exit(1);
     }
   );
+
