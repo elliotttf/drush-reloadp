@@ -12,7 +12,7 @@ var Stream = require('stream');
 var zlib = require('zlib');
 var rimraf = require('rimraf');
 
-var cpus = os.cpus().length;
+var cpus = os.cpus().length + '';
 
 var argv = require('yargs')
   .usage('$0 -s <source.alias> -d <dest.alias> [-v]')
@@ -23,7 +23,7 @@ var argv = require('yargs')
   .alias('v', 'verbose')
   .argv;
 
-var reloadp = {
+var reloadp = _.bindAll({
   localSource: false,
   localDest: false,
   sourceCores: cpus,
@@ -45,6 +45,8 @@ var reloadp = {
    */
   init: function (source, dest) {
     var d = new Date();
+    source = source || argv.s;
+    dest = dest || argv.d;
     this.dumpDir = path.join(os.tmpdir(), d.getTime() + '-' + source + '-' + dest);
     fs.mkdir(this.dumpDir);
     this.sourceOpts = {
@@ -124,7 +126,7 @@ var reloadp = {
     var def = new promise.Deferred();
 
     drush.exec('sqlq --extra=--skip-column-names "SHOW TABLES"', this.sourceOpts)
-      .then(_.bind(function (tables) {
+      .then(function (tables) {
         tables = tables.split(require('os').EOL);
         // HACK - it looks like drush-node is adding a table named '.'
         // to the end. It might just be something from stdout but it's
@@ -134,8 +136,8 @@ var reloadp = {
         var barString = 'Reloading ' + this.destOpts.alias + ' [:bar] :percent in :elapseds';
         var bar = new PB(barString, { total: tables.length, width: 20 });
 
-        var iq = async.queue(_.bind(this.importWorker, this), this.destCores);
-        var dq = async.queue(_.bind(this.dumpWorker, this), this.sourceCores);
+        var iq = async.queue(this.importWorker, this.destCores);
+        var dq = async.queue(this.dumpWorker, this.sourceCores);
 
         dq.pause();
         dq.drain = function () {
@@ -144,7 +146,7 @@ var reloadp = {
           };
         };
 
-        _.each(tables, function (table) {
+        tables.forEach(function (table) {
           dq.push(
             {
               iq: iq,
@@ -159,7 +161,7 @@ var reloadp = {
           );
         }, this);
         dq.resume();
-      }, this));
+      }.bind(this));
 
     return def.promise;
   },
@@ -202,7 +204,7 @@ var reloadp = {
    */
   dumpWorker: function (task, callback) {
     task.fn().then(
-      _.bind(function (res) {
+      function (res) {
         task.iq.push(
           {
             res: res,
@@ -216,7 +218,7 @@ var reloadp = {
           }
         );
         callback();
-      }, this),
+      }.bind(this),
       callback
     );
   },
@@ -231,7 +233,7 @@ var reloadp = {
    */
   dumpTable: function (table) {
     var dumpFile = path.join(this.dumpDir, table + '.sql');
-    return _.bind(function () {
+    return function () {
       var def = new promise.Deferred();
       if (argv.v) {
         console.log('Dumping ' + table + '.');
@@ -260,7 +262,7 @@ var reloadp = {
         });
 
       return def.promise;
-    }, this);
+    }.bind(this);
   },
 
   /**
@@ -272,65 +274,57 @@ var reloadp = {
   after: function () {
     rimraf(this.dumpDir);
     return drush.exec('updb', this.destOpts);
-  }
-};
+  },
 
-reloadp.init(argv.s, argv.d)
-  .then(
-    _.bind(reloadp.checkAliases, reloadp),
-    function(err) {
-      console.error(err);
-      process.exit(1);
+  /**
+   * Sets flags about the provided aliases
+   *  - if they are in fact local.
+   *
+   * @param {array<string>} aliases
+   *   [0] - Alias information on source
+   *   [1] - Alias information on dest
+   */
+  setAliases: function (aliases) {
+    var sourceAlias = aliases[0].toString('binary');
+    var destAlias = aliases[1].toString('binary');
+    if (!sourceAlias.match(/remote-host/)) {
+      this.localSource = true;
     }
-  )
-  .then(
-    function (aliases) {
-      var sourceAlias = aliases[0].toString('binary');
-      var destAlias = aliases[1].toString('binary');
-      if (!sourceAlias.match(/remote-host/)) {
-        reloadp.localSource = true;
-      }
-      if (!destAlias.match(/remote-host/)) {
-        reloadp.localDest = true;
-      }
-      return reloadp.getCores();
-    },
-    function (err) {
-      console.error(err);
-      process.exit(1);
+    if (!destAlias.match(/remote-host/)) {
+      this.localDest = true;
     }
-  )
-  .then(
-    function (cores) {
-      var sourceCores = cores[0].toString('binary');
-      var destCores = cores[1].toString('binary');
-      if (sourceCores) {
-        reloadp.sourceCores = sourceCores.replace(/\D/, '');
-      }
-      if (destCores) {
-        reloadp.destCores = destCores.replace(/\D/, '');
-      }
-      return reloadp.dropTables();
-    },
-    function (err) {
-      console.error(err);
-      process.exit(1);
+  },
+
+  /**
+   * Sets flags to let us know how many cores are available
+   *   on source and destination instances
+   *
+   * @param {array<string>} cores
+   *  [0] - CPU information on source
+   *  [1] - CPU information on dest
+   */
+  setCores: function (cores) {
+    var sourceCores = cores[0].toString('binary');
+    var destCores = cores[1].toString('binary');
+    if (sourceCores) {
+      this.sourceCores = sourceCores.replace(/\D/, '');
     }
-  )
-  .then(
-    _.bind(reloadp.reload, reloadp),
-    function (err) {
-      console.error(err);
-      process.exit(1);
+    if (destCores) {
+      this.destCores = destCores.replace(/\D/, '');
     }
-  )
-  .then(
-    _.bind(reloadp.after, reloadp),
-    function (err) {
-      console.error(err);
-      process.exit(1);
-    }
-  )
+  }
+});
+
+promise.seq([
+    reloadp.init,
+    reloadp.checkAliases,
+    reloadp.setAliases,
+    reloadp.getCores,
+    reloadp.setCores,
+    reloadp.dropTables,
+    reloadp.reload,
+    reloadp.after
+  ])
   .then(
     function () {
       process.exit(0);
@@ -340,4 +334,3 @@ reloadp.init(argv.s, argv.d)
       process.exit(1);
     }
   );
-
