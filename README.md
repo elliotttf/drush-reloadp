@@ -1,5 +1,7 @@
 # Drush Reload Parallel
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/elliotttf/drush-reloadp.svg)](https://greenkeeper.io/)
+
 Reloads Drupal databases using [drush](https://github.com/drush-ops/drush).
 
 This module will dump all the tables from a source database in parallel
